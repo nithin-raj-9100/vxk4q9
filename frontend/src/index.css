@@ -87,8 +87,15 @@ input {
 
 .app {
   max-width: 1200px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 20px 24px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app > main {
+  flex: 1;
 }
 
 .app-header {
@@ -196,10 +203,6 @@ input {
   border-color: var(--series-1);
   background: var(--accent-wash);
   font-weight: 600;
-}
-
-main {
-  display: block;
 }
 
 .refreshing {
