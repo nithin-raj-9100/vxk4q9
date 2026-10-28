@@ -80,6 +80,7 @@ export default function App() {
       </header>
 
       {meta.error && <p className="error">Could not reach the API: {meta.error.message}</p>}
+      {!m && !meta.error && <p className="loading">Loading January 2026 wind data… the first visit can take a few seconds.</p>}
 
       {m && activeDay && activeCutoff && (
         <>
