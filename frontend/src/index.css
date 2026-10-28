@@ -87,15 +87,12 @@ input {
 
 .app {
   max-width: 1200px;
-  min-height: 100vh;
   margin: 0 auto;
   padding: 20px 24px 40px;
-  display: flex;
-  flex-direction: column;
 }
 
 .app > main {
-  flex: 1;
+  min-height: 100vh;
 }
 
 .app-header {
