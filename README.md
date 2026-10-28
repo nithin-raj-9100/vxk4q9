@@ -2,13 +2,16 @@
 
 Decision support for a GB utility's day-ahead power buying team. It shows the **latest national wind forecast available at the auction cutoff**, puts a **calibrated uncertainty range** around it, and **measures how accurate those forecasts were** across the January 2026 pilot.
 
-- **Live app:** _VERCEL_URL_
+- **Live app:** https://vxk4q9.vercel.app
+- **Repository:** https://github.com/nithin-raj-9100/vxk4q9
 - **Stack:** React + TypeScript (Vite, Recharts) · Python 3.12 (FastAPI) · Docker · Vercel (container runtime)
 - **Data:** Elexon BMRS [FUELHH](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/FUELHH/stream) (`fuelType=WIND` actuals) and [WINDFOR](https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/WINDFOR/stream) (wind forecasts). No other data is used.
 
 ## Quick start
 
 ### Docker (recommended)
+
+Requires Docker with Compose.
 
 ```bash
 docker compose up --build
@@ -104,7 +107,11 @@ FastAPI (app.main) ── analysis.py (pure functions) ── dataset.py (in-mem
                                          backend/data/*.json ← scripts/fetch_snapshot.py ← Elexon BMRS
 ```
 
-One Docker image: a Node stage builds the SPA, and a Python stage serves both the API and the static files. On Vercel the root `Dockerfile` is deployed through the [Container Runtime](https://vercel.com/docs/functions/runtimes/container) (Container preset). It listens on `$PORT`, defaulting to 80.
+One Docker image: a Node stage builds the SPA, and a Python stage serves both the API and the static files. The **same image runs locally and in production**. `vercel.json` declares a single Vercel *service* whose entrypoint is the root `Dockerfile`, so Vercel builds it with its [Container Runtime](https://vercel.com/docs/functions/runtimes/container), pushes it to the Vercel Container Registry, and routes all traffic to it. The container listens on `$PORT`, defaulting to 80.
+
+> Without the explicit `services` entry, Vercel auto-detects `frontend/` (Vite) and `backend/` (Python) and builds them natively, bypassing Docker.
+
+The production container scales to zero after about 5 minutes idle, so the first request after a pause takes a few seconds (cold start).
 
 ### Repository layout
 
@@ -112,6 +119,7 @@ One Docker image: a Node stage builds the SPA, and a Python stage serves both th
 .
 ├── Dockerfile                 # multi-stage: build React → serve with FastAPI (local + Vercel)
 ├── docker-compose.yml         # local one-command run on :8000
+├── vercel.json                # deploys the root Dockerfile as a Vercel container service
 ├── .github/workflows/ci.yml   # lint, test, build, docker smoke test
 ├── backend/
 │   ├── pyproject.toml, uv.lock
