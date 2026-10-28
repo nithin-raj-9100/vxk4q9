@@ -8,6 +8,9 @@ export const formatGw = (mw: number | null | undefined) => (mw == null ? '–' :
 export const formatSignedGw = (mw: number | null | undefined) =>
   mw == null ? '–' : `${mw > 0 ? '+' : mw < 0 ? '−' : ''}${gw.format(Math.abs(mw) / 1000)} GW`
 
+export const formatGwRange = (lowMw: number | null | undefined, highMw: number | null | undefined) =>
+  lowMw == null || highMw == null ? '–' : `${formatSignedGw(lowMw).replace(' GW', '')} to ${formatSignedGw(highMw)}`
+
 export const formatGwh = (mwh: number | null | undefined) => (mwh == null ? '–' : `${whole.format(mwh / 1000)} GWh`)
 
 export const formatPct = (pct: number | null | undefined) => (pct == null ? '–' : `${gw.format(pct)}%`)

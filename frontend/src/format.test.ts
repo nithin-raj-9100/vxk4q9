@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatGw, formatGwh, formatSignedGw, niceTicks, ukTime } from './format'
+import { formatGw, formatGwh, formatGwRange, formatSignedGw, niceTicks, ukTime } from './format'
 
 describe('format', () => {
   it('formats MW as GW', () => {
@@ -10,6 +10,11 @@ describe('format', () => {
   it('signs errors explicitly', () => {
     expect(formatSignedGw(-1500)).toBe('−1.5 GW')
     expect(formatSignedGw(800)).toBe('+0.8 GW')
+  })
+
+  it('formats signed ranges with true minus signs', () => {
+    expect(formatGwRange(-3800, 100)).toBe('−3.8 to +0.1 GW')
+    expect(formatGwRange(-3800, -200)).toBe('−3.8 to −0.2 GW')
   })
 
   it('formats MWh as GWh', () => {

@@ -463,3 +463,24 @@ main {
     flex-direction: column;
   }
 }
+
+.tabs button,
+.presets button,
+.theme-toggle,
+.toggle,
+.table-details summary {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 2px;
+}

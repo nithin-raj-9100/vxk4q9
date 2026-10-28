@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { endpoints, type Accuracy, type DailyAccuracy, type LeadTimeBucket } from '../api'
 import { Card, LegendKey, StatTile, TooltipBox } from '../components/ui'
-import { formatGw, formatGwh, formatPct, formatSignedGw, gwAxis, longDate, niceTicks, shortDate, ukDateTime } from '../format'
+import { formatGw, formatGwh, formatGwRange, formatPct, formatSignedGw, gwAxis, longDate, niceTicks, shortDate, ukDateTime } from '../format'
 import { useFetch } from '../useFetch'
 
 const AXIS = { stroke: 'var(--axis)', tick: { fill: 'var(--text-muted)', fontSize: 12 }, tickLine: false }
@@ -29,7 +29,7 @@ export function AccuracyView({ cutoff }: { cutoff: string }) {
         <StatTile label="WAPE" value={formatPct(o.wapePct)} detail="Total absolute error ÷ total wind" />
         <StatTile
           label="80% of hourly errors within"
-          value={`${gwAxis(o.p10Mw ?? 0)} to +${gwAxis(o.p90Mw ?? 0)} GW`}
+          value={formatGwRange(o.p10Mw, o.p90Mw)}
           detail="P10 to P90 of actual − forecast"
         />
       </div>
